@@ -31,13 +31,21 @@
 // DEFINE THE PINS THAT WILL BE MAPPED TO THE 7 SEG DISPLAY BELOW, 'a' to 'g'
 #define a     15
 /* Complete all others */
+#define b 32
+#define c 33
+#define d 25
+#define e 26
+#define f 27
+#define g 14
+#define dp 12
 
 
 
 // DEFINE VARIABLES FOR TWO LEDs AND TWO BUTTONs. LED_A, LED_B, BTN_A , BTN_B
 #define LED_A 4
 /* Complete all others */
-
+#define LED_B 0
+#define BTN_A 2
 
 
 // MQTT CLIENT CONFIG  
@@ -97,7 +105,17 @@ void setup() {
   // CONFIGURE THE ARDUINO PINS OF THE 7SEG AS OUTPUT
   pinMode(a,OUTPUT);
   /* Configure all others here */
+  pinMode(b,OUTPUT);
+  pinMode(c,OUTPUT);
+  pinMode(d,OUTPUT);
+  pinMode(e,OUTPUT);
+  pinMode(f,OUTPUT);
+  pinMode(g,OUTPUT);
+  pinMode(dp,OUTPUT);
+  pinMode(LED_A, OUTPUT);
+  pinMode(LED_B, OUTPUT);
 
+  pinMode(BTN_A, INPUT_PULLUP);
   initialize();           // INIT WIFI, MQTT & NTP 
   // vButtonCheckFunction(); // UNCOMMENT IF USING BUTTONS THEN ADD LOGIC FOR INTERFACING WITH BUTTONS IN THE vButtonCheck FUNCTION
 
@@ -123,7 +141,10 @@ void vButtonCheck( void * pvParameters )  {
     for( ;; ) {
         // Add code here to check if a button(S) is pressed
         // then execute appropriate function if a button is pressed  
-
+         if (digitalRead(BTN_A) == LOW) { // Replace BUTTON_PIN with the actual pin number
+            GDP();
+        }
+        
         vTaskDelay(200 / portTICK_PERIOD_MS);  
     }
 }
@@ -237,11 +258,38 @@ bool publish(const char *topic, const char *payload){
 
 void Display(unsigned char number){
   /* This function takes an integer between 0 and 9 as input. This integer must be written to the 7-Segment display */
-  
+  // Array to hold the segment values for digits 0-9
+  const uint8_t segmentMap[10] = {
+    0b00111111, // 0
+    0b00000110, // 1
+    0b01011011, // 2
+    0b01001111, // 3
+    0b01100110, // 4
+    0b01101101, // 5
+    0b01111101, // 6
+    0b00000111, // 7
+    0b01111111, // 8
+    0b01101111  // 9
+  };
+
+  // Ensure the number is between 0 and 9
+  if (number > 9) return;
+
+  // Get the segment value for the given number
+  uint8_t segments = segmentMap[number];
+
+  // Write the segment value to the seven-segment display
+  // Assuming the segments are connected to pins 2-8
+
+  // for (int i = 0; i < 7; i++) {
+  //   digitalWrite(2 + i, (segments >> i) & 0x01);
+  // }
+
 }
 
 int8_t getLEDStatus(int8_t LED) {
-  // RETURNS THE STATE OF A SPECIFIC LED. 0 = LOW, 1 = HIGH  
+  // RETURNS THE STATE OF A SPECIFIC LED. 0 = LOW, 1 = HIGH 
+  return digitalRead(LED); 
 }
 
 void setLEDState(int8_t LED, int8_t state){
@@ -260,6 +308,15 @@ void GDP(void){
      this integer to number variable below
   */
    number = 0 ;
+
+   // Generate a random single-digit integer
+    number = random(0, 10);
+
+  // Display the generated integer on the seven-segment display
+    Display(number);
+
+  // Publish the generated integer
+   //publishNumber(randomNumber);
 
   // DISPLAY integer on 7Seg. by 
   /* Add code here to calling appropriate function that will display integer to 7-Seg*/
