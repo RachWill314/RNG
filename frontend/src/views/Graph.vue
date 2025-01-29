@@ -110,9 +110,9 @@ const CreateCharts = async () => {
   chart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: ['LED A', 'LED B'],
+      labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
       datasets: [{
-        label: 'LED Count',
+        label: '',
         data: [led_A.value, led_B.value],
         backgroundColor: ['#FF6384', '#36A2EB'],
       }]
