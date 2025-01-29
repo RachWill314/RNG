@@ -134,10 +134,10 @@ void vButtonCheck(void *pvParameters)
     // then execute appropriate function if a button is pressed
     if (digitalRead(BTN_A) == LOW)
     { // Replace BUTTON_PIN with the actual pin number
-      Serial.println("Button A Pressed");
+      //Serial.println("Button A Pressed");
       GDP();
     } else {
-      Serial.println("Button A Not Pressed");
+      //Serial.println("Button A Not Pressed");
     }
 
     vTaskDelay(200 / portTICK_PERIOD_MS);
@@ -239,7 +239,7 @@ void callback(char *topic, byte *payload, unsigned int length)
    doc["ledB"] = getLEDStatus(LED_B);
 
     serializeJson(doc, message); // Seralize / Covert JSon object to JSon string and store in char* array
-    publish("2415", message);   // Publish to a topic that only the Frontend subscribes to.
+    publish("620155671", message);   // Publish to a topic that only the Frontend subscribes to.
   }
 }
 

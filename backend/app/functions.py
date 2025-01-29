@@ -59,12 +59,14 @@ class DB:
         except Exception as e:
             msg = str(e)
             if "duplicate" not in msg:
+                print("username", self.username)
+                print("password", self.password)
                 print("addUpdate error ",msg)
             return False
         else:                  
             return True
         
-
+    
     def numberFrequency(self):
         '''RETURNS A LIST OF OBJECTS. EACH OBJECT CONTAINS A NUMBER AND ITS FREQUECY'''
         try:
